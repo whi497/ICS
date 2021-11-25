@@ -81,3 +81,68 @@ A向量表示地址，WE 为write enable.
 * Control Unit 
 * Processing Unit
 * Memory Unit
+
+
+
+### 冯.诺伊曼模型
+##### LC3Data Path
+
+ * Control Unit 
+ * Processing Unit
+ * Memory Unit
+
+##### Memory
+
+* Address  |  Contents
+
+* Basic Operation: LOAD  |  STORE
+* Interface to memory: (内存接口)
+  * MAD: Memory Address Register
+  * MDR: Memory Data Register
+
+##### Processing Unit
+
+* Function Unit
+
+* Register
+
+* Word Size
+
+##### Control Unit
+
+* Instruction Register(IR):存储当前指令
+* Program Counter(PC):指向下一条应当执行的指令位置的“指针”<img src="D:\wh030917\Documents\1624745389\FileRecv\MobileFile\E032BD17EAD873CB3EDCA0F5F2F81F16.png" alt="E032BD17EAD873CB3EDCA0F5F2F81F16" style="zoom: 25%;" />
+
+##### Instruction
+
+* opcode:操作指令
+* operands:操作数或地址
+* Instruction Set Architecture(ISA):指令集结构
+
+### The LC3  Operate Instructions
+
+##### Memory of LC3:
+
+寻址空间：$$2^{16}$$(或65536)
+
+寻址能力(字大小)：16bit
+
+##### Registers:
+
+* eight general-purpose register(八个通用寄存器)：$$R_0 - R_7$$
+
+* other register
+
+##### opcode
+
+*  15 opcodes
+* Operate opcode: <u>ADD,AND,NOT</u>
+* Data Movement: <u>LD,LDI,LDR,LEA</u>,ST,STR,STI
+* Control instruction: BR, JSR/JSRR, JMP(RET), RTI, TRAP
+
+TIP: the opcodes with underline will set condition codes: **N: negative Z: zero P: positive**
+
+##### Addressing Modes
+
+* 非寻址：立即数，通用寄存器
+* 寻址：PC相关寻址，间接寻址，base+offset寻址
