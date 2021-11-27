@@ -21,7 +21,7 @@
 
 ##### 逻辑运算
 
-* 与或非，异或同或
+* 与或非，异或同或，以及按位进行上述操作。
 * 位矢量：以n bit代表n个单元，0，1表示其工作与否。
 
 ##### 浮点数   P26 (Floating-point converse to FIxed-point)
@@ -81,15 +81,22 @@ A向量表示地址，WE 为write enable.
 * Control Unit 
 * Processing Unit
 * Memory Unit
+* I/O
 
 
 
 ### 冯.诺伊曼模型
-##### LC3Data Path
+##### LC3 Data Path
 
- * Control Unit 
- * Processing Unit
- * Memory Unit
+* Memory: Storage of information (data/program)
+
+*  Processing Unit: Computation/Processing of Information
+
+*  Input: Means of getting information into the computer. e.g. keyboard, mouse
+
+*  Output: Means of getting information out of the computer. e.g. printer, monitor
+
+*  Control Unit: Makes sure that all the other parts perform their tasks correctly and at the correct time.
 
 ##### Memory
 
@@ -106,7 +113,7 @@ A向量表示地址，WE 为write enable.
 
 * Register
 
-* Word Size
+* Word Size（常见的32位处理器，64位处理器。字长与处理能力有关）
 
 ##### Control Unit
 
@@ -135,14 +142,26 @@ A向量表示地址，WE 为write enable.
 
 ##### opcode
 
-*  15 opcodes
+* 15 opcodes（1101 保留没有定义暂不可使用）
 * Operate opcode: <u>ADD,AND,NOT</u>
-* Data Movement: <u>LD,LDI,LDR,LEA</u>,ST,STR,STI
+* Data Movement: <u>LD,LDI,LDR</u>,LEA,ST,STR,STI
 * Control instruction: BR, JSR/JSRR, JMP(RET), RTI, TRAP
 
 TIP: the opcodes with underline will set condition codes: **N: negative Z: zero P: positive**
+**Attention**:LEA no longer sets the condition codes.
+
+TRAP x23使用R0暂存读入值。与返回相关的指令会使用R7暂存部分恢复信息。
 
 ##### Addressing Modes
 
 * 非寻址：立即数，通用寄存器
 * 寻址：PC相关寻址，间接寻址，base+offset寻址
+
+##### Data Path
+* 全局总线
+* 内存
+* ALU和寄存器
+* PC和PCMUX
+* MAR和MARMUX
+
+![C372F95BA750C8B9565BD67AD9766348](D:\wh030917\Documents\1624745389\FileRecv\MobileFile\C372F95BA750C8B9565BD67AD9766348.png)
