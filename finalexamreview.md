@@ -1,5 +1,13 @@
 ## 计算机系统概论
 
+> 更改：
+>
+> LEA不再设置条件码
+>
+> TRAP不再以R7作为返回链接，而采用压栈和出栈
+>
+> 
+
 ### 第二章 bit，数据类型及运算
 
 > bit是信息的基本单位能表示一个0或1。
@@ -27,6 +35,8 @@
 ##### 浮点数   P26 (Floating-point converse to FIxed-point)
 
 通常采用IEEE标准，共三十二位。第一位为符号位(sign)，后八位表示指数（1<=n<=254)(有效计为n-127)，在后23位表示小数。
+
+> 需要注意可能的溢出问题
 
 ##### ASCII码：last page
 
@@ -152,7 +162,7 @@ A向量表示地址，WE 为write enable.
 TIP: the opcodes with underline will set condition codes: **N: negative Z: zero P: positive**
 **Attention**:LEA no longer sets the condition codes.
 
-TRAP x23使用R0暂存读入值。与返回相关的指令会使用R7暂存部分恢复信息。
+TRAP x23使用R0暂存读入值。与返回相关的指令**不会使用**R7暂存部分恢复信息。
 
 ##### Addressing Modes
 
@@ -211,7 +221,7 @@ OPERAND可以是通用寄存器也可以是立即数，与机器码不同的是�
 
 .BLKW  告诉汇编器占用指定大小空间，常用于申请内存。
 
-.STRING 告诉汇编器占用指定字符串长度的空间，并依次填入字符。
+.STRING 告诉汇编器占用指定字符串长度的空间，并依次填入字符（会额外填入0x0000）。
 
 .END 告诉汇编器有效代码结束，.END后的代码会被汇编器忽略。
 
@@ -257,7 +267,7 @@ CPU工作的频率是十分快的，而IO通常是相对缓慢且难以预知的
 
 使用ready位是一种最简单的协议，当数据准备就绪时，ready置1，cpu获取信息后将ready置0 。
 
-不过IO的频率是恒定已知的那么我们可以预置时间让cpu取数据，而无需ready位，这样的**IO是同步的**
+不过IO的频率是恒定已知的那么我们可以预置时间让cpu取数据，而无需ready位，这样的**IO是同步的**。
 
 ##### 中断驱动（interrupt）与轮询（pulling）
 
@@ -353,12 +363,24 @@ CPU工作的频率是十分快的，而IO通常是相对缓慢且难以预知的
 
 * 扩展8-bit矢量装入MAR中
 * 根据MAR读取内容到MDR
-* 保存PC至R7寄存器
+* 保存PCsuperuser stack
 * 将MDR装入PC开始服务程
 
 ##### 寄存器内容的保存与恢复
 
 ​	调用其他程序包括系统程序会有可能改变寄存器原有的值，这要求我们要保护好有用的值，一般遵循谁知道谁保存的原则。
+
+##### 启动与执行
+
+* 保存PC，PSR
+
+  > PSR[15]为特权状态，PSR[10:8]为运行优先级，PSR[2:0]为条件码NZP
+
+  将PC，PSR压入superuser Stack
+
+* 装入中断程序的状态包括起始地址，PSR
+
+* 中断返回弹出PSR，PC恢复原程序执行。
 
 #### 子程序
 
@@ -376,4 +398,95 @@ CPU工作的频率是十分快的，而IO通常是相对缓慢且难以预知的
 
 压入：注意上溢出。
 
+```c++
+PUSH ADD R6 R6 #-1
+	 STR R0 R6 #0
+```
+
+```c++
+PUSH AND R5 R5 #0
+     LD R1 MAX
+     ADD R2 R6 R1
+     BRZ Failure
+     ADD R6 R6 #-1
+     STR R0 R6 #0
+     RET
+Failure ADD R5 R5 #1
+     RET
+MAX  .FILL XC005
+```
+
 弹出：注意下溢出。
+
+```c++
+POP	 LDR R0 R6 #0
+	 ADD R6 R6 #-1
+```
+
+```c++
+POP	 AND R5 R5 #0
+     LD R1 MIN
+     ADD R2 R6 R1
+     BRZ Failure
+     LDR R0 R6 #0
+     ADD R6 R6 #1
+     RET
+Failure ADD R5 R5 #1
+     RET
+MIN  .FILL XCOOO
+```
+
+
+
+### 队列
+
+先进先出的数据类型
+
+##### 操作（通常R3会被用作队头指针，R4会被用作队尾指针）
+
+入队出队
+
+出队
+
+```c++
+        LD R2, LAST
+        ADD R2,R3,R2
+        BRnp SKIP_1
+        LD R3,FIRST
+        BR SKIP_2
+SKIP_1  ADD R3,R3,#1
+SKIP_2  LDR R0,R3,#0 ; R0 gets the front of the queue
+		RET
+LAST    .FILL x7FFB ; LAST contains the negative of 8005
+FIRST   .FILL x8000
+```
+
+入队
+
+```c++
+        LD R2, LAST
+        ADD R2,R4,R2
+        BRnp SKIP_1
+        LD R4,FIRST
+        BR SKIP_2
+SKIP_1  ADD R4,R4,#1
+SKIP_2  STR R0,R4,#0 ; R0 gets the front of the queue
+RET
+LAST 	.FILL 7FFB ; LAST contains the negative of 8005
+FIRST 	.FILL x8000
+```
+
+同时需要注意上溢和下溢出
+
+```c++
+			AND R5,R5,#0 ; Initialize R5 to 0
+        	NOT R2,R3
+        	ADD R2,R2,#1 ; R2 contains negative of R3
+        	ADD R2,R2,R4
+        	BRz UNDERFLOW; code to remove the front of the queue and return success.
+UNDERFLOW 	ADD R5,R5,#1
+			RET
+```
+
+队空时头尾指针指向同一个寄存器，队满时尾指针为头指针位置减一。
+
