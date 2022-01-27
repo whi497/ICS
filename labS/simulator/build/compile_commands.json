@@ -1,0 +1,22 @@
+[
+{
+  "directory": "/home/leaf/ics2021/labS/simulator/build",
+  "command": "/usr/bin/c++  -DBOOST_ALL_NO_LIB -DBOOST_PROGRAM_OPTIONS_DYN_LINK -I/home/leaf/ics2021/labS/simulator/include  -g   -std=gnu++17 -o CMakeFiles/lc3simulator.dir/src/main.cpp.o -c /home/leaf/ics2021/labS/simulator/src/main.cpp",
+  "file": "/home/leaf/ics2021/labS/simulator/src/main.cpp"
+},
+{
+  "directory": "/home/leaf/ics2021/labS/simulator/build",
+  "command": "/usr/bin/c++  -DBOOST_ALL_NO_LIB -DBOOST_PROGRAM_OPTIONS_DYN_LINK -I/home/leaf/ics2021/labS/simulator/include  -g   -std=gnu++17 -o CMakeFiles/lc3simulator.dir/src/memory.cpp.o -c /home/leaf/ics2021/labS/simulator/src/memory.cpp",
+  "file": "/home/leaf/ics2021/labS/simulator/src/memory.cpp"
+},
+{
+  "directory": "/home/leaf/ics2021/labS/simulator/build",
+  "command": "/usr/bin/c++  -DBOOST_ALL_NO_LIB -DBOOST_PROGRAM_OPTIONS_DYN_LINK -I/home/leaf/ics2021/labS/simulator/include  -g   -std=gnu++17 -o CMakeFiles/lc3simulator.dir/src/register.cpp.o -c /home/leaf/ics2021/labS/simulator/src/register.cpp",
+  "file": "/home/leaf/ics2021/labS/simulator/src/register.cpp"
+},
+{
+  "directory": "/home/leaf/ics2021/labS/simulator/build",
+  "command": "/usr/bin/c++  -DBOOST_ALL_NO_LIB -DBOOST_PROGRAM_OPTIONS_DYN_LINK -I/home/leaf/ics2021/labS/simulator/include  -g   -std=gnu++17 -o CMakeFiles/lc3simulator.dir/src/simulator.cpp.o -c /home/leaf/ics2021/labS/simulator/src/simulator.cpp",
+  "file": "/home/leaf/ics2021/labS/simulator/src/simulator.cpp"
+}
+]

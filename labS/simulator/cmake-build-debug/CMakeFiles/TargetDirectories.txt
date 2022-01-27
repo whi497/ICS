@@ -1,0 +1,3 @@
+D:/wh030917/Documents/GitHub/ICS/labS/simulator/cmake-build-debug/CMakeFiles/lc3simulator.dir
+D:/wh030917/Documents/GitHub/ICS/labS/simulator/cmake-build-debug/CMakeFiles/edit_cache.dir
+D:/wh030917/Documents/GitHub/ICS/labS/simulator/cmake-build-debug/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,3 @@
+/home/leaf/ics2021/labS/simulator/build/CMakeFiles/rebuild_cache.dir
+/home/leaf/ics2021/labS/simulator/build/CMakeFiles/edit_cache.dir
+/home/leaf/ics2021/labS/simulator/build/CMakeFiles/lc3simulator.dir
